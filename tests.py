@@ -34,14 +34,18 @@ class PartyTests(unittest.TestCase):
                                   follow_redirects=True)
 
         # FIXME: check that once we log in we see party details--but not the form!
-        print("FIXME")
+        self.assertIn(b'<h2>Party Details</h2>', result.data)       #test for party details
+        self.assertNotIn(b'<h2>Please RSVP</h2>', result.data)           # test for not the form
 
     def test_rsvp_mel(self):
         """Can we keep Mel out?"""
 
         # FIXME: write a test that mel can't invite himself
-        pass
-        print("FIXME")
+        # pass
+        rsvp_info = {'name': "Mel Melitpolski", 'email': "mel@ubermelon.com"}
+        result = self.client.post("/rsvp", data=rsvp_info,
+                                    follow_redirects=True)
+        self.assertIn(b'Sorry, Mel. This is kind of awkward', result.data)
 
 
 if __name__ == "__main__":
